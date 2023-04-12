@@ -10,6 +10,7 @@
 
 body {
   background: url(./img/stage.png);
+  position: relative;
 }
 
 #gameBoard {
@@ -35,4 +36,11 @@ body {
   h3 {
     color: red;
   }
+}
+
+#duck {
+  position: absolute;
+  width: 120px;
+  height: 100px;
+  //   left: 500px;
 }
