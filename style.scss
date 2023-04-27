@@ -9,11 +9,40 @@
 }
 
 body {
-  background: url(./img/stage.png);
+  width: 100%;
+  height: 100vh;
+  background: #d5d4d4;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-#gameBoard {
+#root {
+  background: url(./img/stage.png);
+  background-size: 100% 100%;
+  width: 1000px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  // z-index: -1;
+}
+
+#frontStage {
+  background: url(./img/frontstage.png);
+  background-position: top;
+  background-size: 100% 100%;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+#gameStartBoard {
+  position: absolute;
   height: 500px;
   width: 700px;
   background-color: #d5d4d4d4;
@@ -21,8 +50,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 80px auto;
+  margin: auto;
   gap: 40px;
+  z-index: 2;
   h1 {
     font-size: 32px;
     word-spacing: 1px;
@@ -39,8 +69,10 @@ body {
 }
 
 #duck {
+  // z-index: 0;
   position: absolute;
-  width: 120px;
-  height: 100px;
+  width: 100px;
+  height: 80px;
+  // transition: top 0.02s ease-out, left 0.02s ease-out;
   //   left: 500px;
 }
