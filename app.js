@@ -29,6 +29,7 @@ function startGame() {
   duckImg.style.top = `${duckObj.y}px`;
 
   // Add the new duck to the game board
+
   gameBoard.appendChild(duckImg);
 }
 
@@ -82,10 +83,11 @@ const duckMove = setInterval(() => {
 
 gameBoard.addEventListener("click", (event) => {
   // Get the x and y coordinates of the mouse click
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
 
+  const mouseX = event.clientX - gameBoard.offsetLeft;
+  const mouseY = event.clientY - gameBoard.offsetTop;
   // Get the current top and left coordinates of the duck
+
   const duckTop = duckImg.offsetTop;
   const duckLeft = duckImg.offsetLeft;
 
@@ -97,9 +99,45 @@ gameBoard.addEventListener("click", (event) => {
     mouseY <= duckTop + duckImg.offsetHeight
   ) {
     // The player has successfully shot the duck!
-    console.log("Good shot!");
+    duckKill();
   }
 });
+
+function duckKill() {
+  console.log("Good shot!");
+  duckImg.src = `./img/duckkill.png`;
+
+  // Clear the duckMove interval to stop the duck from moving
+  clearInterval(duckMove);
+
+  setTimeout(() => {
+    duckImg.src = `./img/duckDrop.png`;
+
+    const duckTop = duckImg.offsetTop;
+    const duckLeft = duckImg.offsetLeft;
+
+    // Calculate the distance to drop the duck
+    const distanceToDrop = gameBoard.offsetHeight - duckTop - duckImg.offsetHeight;
+
+    // Calculate the descent speed based on the distance to drop
+    const descentSpeed = distanceToDrop < 100 ? 1 : 2;
+
+    // Drop the duck smoothly
+    const dropDuck = setInterval(() => {
+      // Get the current top coordinate of the duck
+      const duckTop = duckImg.offsetTop;
+
+      // Move the duck towards the bottom of the screen
+      duckImg.style.top = `${duckTop + descentSpeed}px`;
+
+      // Check if the duck has reached the bottom of the screen
+      if (duckTop + duckImg.offsetHeight >= gameBoard.offsetHeight) {
+        // Stop dropping the duck
+        clearInterval(dropDuck);
+      }
+    }, 20);
+  }, "300");
+}
 
 function startBoard() {
   return ` <div id="gameStartBoard">

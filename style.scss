@@ -6,6 +6,7 @@
   text-decoration: none;
   list-style-type: none;
   font-family: "Press Start 2P", cursive;
+  user-select: none;
 }
 
 body {
@@ -28,7 +29,6 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  // z-index: -1;
 }
 
 #frontStage {
@@ -69,10 +69,7 @@ body {
 }
 
 #duck {
-  // z-index: 0;
   position: absolute;
-  width: 100px;
-  height: 80px;
-  // transition: top 0.02s ease-out, left 0.02s ease-out;
-  //   left: 500px;
+  width: 60px;
+  height: 50px;
 }
