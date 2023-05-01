@@ -1,16 +1,26 @@
 const gameBoard = document.getElementById("root");
 const frontStage = document.createElement("div");
-let duckImg = document.createElement("img");
-let randomY = Math.floor(Math.random() * (350 - 0 + 1) + 0);
+
+let duckImgs = [];
+let randomYs = [];
 let movingRight = true;
+
+const lvlSystem = {
+  lvlOne: {
+    duckCount: 2,
+  },
+  lvlTwo: {
+    duckCount: 3,
+  },
+};
+
+let currentLevel = "lvlOne";
 
 let duckObj = {
   img: `./img/greenDuck.png`,
   y: 350,
   x: 450,
 };
-
-console.log(randomY);
 
 function gameStart() {
   gameBoard.innerHTML = startBoard();
@@ -23,88 +33,114 @@ function gameStart() {
 function startGame() {
   gameBoard.removeChild(gameBoard.children[0]);
 
-  duckImg.src = duckObj.img;
-  duckImg.id = "duck";
-  duckImg.style.left = `${duckObj.x}px`;
-  duckImg.style.top = `${duckObj.y}px`;
+  const duckCount = lvlSystem[currentLevel].duckCount;
 
-  // Add the new duck to the game board
+  for (let i = 0; i < duckCount; i++) {
+    setTimeout(() => {
+      let duckImg = document.createElement("img");
+      duckImg.src = duckObj.img;
+      duckImg.id = `duck-${i}`;
+      duckImg.className = `duck`;
+      duckImg.style.left = `${duckObj.x + i * 50}px`;
+      duckImg.style.top = `${duckObj.y}px`;
+      duckImgs.push(duckImg);
 
-  gameBoard.appendChild(duckImg);
+      randomYs.push(Math.floor(Math.random() * (550 - 0 + 1) + 150));
+
+      if (Math.random() < 0.5) {
+        movingRight = true;
+        duckImg.style.transform = "scaleX(-1)";
+      } else {
+        movingRight = false;
+      }
+
+      gameBoard.appendChild(duckImg);
+    }, i * 2000); // Delay each duck by i * 2000 milliseconds
+  }
 }
 
 const duckMove = setInterval(() => {
   // Get the current top and left coordinates of the duck
-  const duckTop = duckImg.offsetTop;
-  const duckLeft = duckImg.offsetLeft;
 
-  // Check if the duck has reached the right wall
-  if (duckLeft >= gameBoard.offsetWidth - duckImg.offsetWidth) {
-    // Change direction to left
-    movingRight = false;
-    // Set a new random target Y coordinate
-    randomY = Math.floor(Math.random() * (350 - 0 + 1) + 0);
-  }
+  for (let i = 0; i < duckImgs.length; i++) {
+    const duckImg = duckImgs[i];
 
-  // Check if the duck has reached the left wall
-  if (duckLeft <= 0) {
-    // Change direction to right
-    movingRight = true;
-    // Set a new random target Y coordinate
-    randomY = Math.floor(Math.random() * (350 - 0 + 1) + 0);
-  }
+    const duckTop = duckImg.offsetTop;
+    const duckLeft = duckImg.offsetLeft;
 
-  // Check if the duck has reached its target Y coordinate
-  if (duckTop <= randomY) {
-    // Set a new random target Y coordinate
-    randomY = Math.floor(Math.random() * (550 - 0 + 1) + 150);
-  }
+    // Check if the duck has reached the right wall
+    if (duckLeft >= gameBoard.offsetWidth - duckImg.offsetWidth) {
+      // Change direction to left
+      movingRight = false;
+      // Set a new random target Y coordinate
+      randomYs[i] = Math.floor(Math.random() * (350 - 0 + 1) + 0);
+    }
 
-  // Update the top and left coordinates of the duck
-  if (movingRight) {
-    duckImg.style.left = `${duckLeft + 2}px`;
-  } else {
-    duckImg.style.left = `${duckLeft - 2}px`;
-  }
+    // Check if the duck has reached the left wall
+    if (duckLeft <= 0) {
+      // Change direction to right
+      movingRight = true;
+      // Set a new random target Y coordinate
+      randomYs[i] = Math.floor(Math.random() * (350 - 0 + 1) + 0);
+    }
 
-  // Calculate the distance between the current top position and the target Y coordinate
-  const distanceToTarget = randomY - duckTop;
+    // Check if the duck has reached its target Y coordinate
+    if (duckTop <= randomYs[i]) {
+      // Set a new random target Y coordinate
+      randomYs[i] = Math.floor(Math.random() * (550 - 0 + 1) + 150);
+    }
 
-  // Determine the speed of the descent based on the distance to the target
-  const descentSpeed = distanceToTarget < 100 ? 1 : 2;
+    // Update the top and left coordinates of the duck
+    if (movingRight) {
+      duckImg.style.left = `${duckLeft + 2}px`;
+    } else {
+      duckImg.style.left = `${duckLeft - 2}px`;
+    }
 
-  // Move the duck towards the target Y coordinate
-  if (duckTop <= randomY) {
-    duckImg.style.top = `${duckTop + descentSpeed}px`;
-  } else {
-    duckImg.style.top = `${duckTop - 2}px`;
+    // Calculate the distance between the current top position and the target Y coordinate
+    const distanceToTarget = randomYs[i] - duckTop;
+
+    // Determine the speed of the descent based on the distance to the target
+    // const descentSpeed = distanceToTarget < 100 ? 1 : 2;
+    const distanceToDrop = gameBoard.offsetHeight - duckTop - duckImg.offsetHeight;
+    const descentSpeed = distanceToDrop < 100 ? 1 : 2;
+
+    // Move the duck towards the target Y coordinate
+    if (duckTop <= randomYs[i]) {
+      duckImg.style.top = `${duckTop + descentSpeed}px`;
+    } else {
+      duckImg.style.top = `${duckTop - 2}px`;
+    }
   }
 }, 20);
 
 gameBoard.addEventListener("click", (event) => {
   // Get the x and y coordinates of the mouse click
-
   const mouseX = event.clientX - gameBoard.offsetLeft;
   const mouseY = event.clientY - gameBoard.offsetTop;
-  // Get the current top and left coordinates of the duck
 
-  const duckTop = duckImg.offsetTop;
-  const duckLeft = duckImg.offsetLeft;
+  // Loop through the duck image elements and check if the mouse click coordinates are within their boundaries
+  for (let i = 0; i < duckImgs.length; i++) {
+    const duckImg = duckImgs[i];
+    const duckTop = duckImg.offsetTop;
+    const duckLeft = duckImg.offsetLeft;
 
-  // Check if the mouse click coordinates are within the boundaries of the duck
-  if (
-    mouseX >= duckLeft &&
-    mouseX <= duckLeft + duckImg.offsetWidth &&
-    mouseY >= duckTop &&
-    mouseY <= duckTop + duckImg.offsetHeight
-  ) {
-    // The player has successfully shot the duck!
-    duckKill();
+    if (
+      mouseX >= duckLeft &&
+      mouseX <= duckLeft + duckImg.offsetWidth &&
+      mouseY >= duckTop &&
+      mouseY <= duckTop + duckImg.offsetHeight
+    ) {
+      // The player has successfully shot the duck!
+      duckKill(duckImg);
+      console.log("good");
+    }
   }
 });
 
-function duckKill() {
+function duckKill(duckImg) {
   console.log("Good shot!");
+  // duckImg.src = `./img/duckkill.png`;
   duckImg.src = `./img/duckkill.png`;
 
   // Clear the duckMove interval to stop the duck from moving
