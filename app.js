@@ -135,7 +135,7 @@ function duckKill() {
         // Stop dropping the duck
         clearInterval(dropDuck);
       }
-    }, 20);
+    }, 10);
   }, "300");
 }
 
