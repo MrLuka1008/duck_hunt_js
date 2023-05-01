@@ -14,12 +14,13 @@ const lvlSystem = {
   },
 };
 
-let currentLevel = "lvlOne";
+let currentLevel = "lvlTwo";
 
 let duckObj = {
   img: `./img/greenDuck.png`,
   y: 350,
   x: 450,
+  isDuckDead: false,
 };
 
 function gameStart() {
@@ -55,7 +56,7 @@ function startGame() {
       }
 
       gameBoard.appendChild(duckImg);
-    }, i * 2000); // Delay each duck by i * 2000 milliseconds
+    }, i * 4000); // Delay each duck by i * 2000 milliseconds
   }
 }
 
@@ -87,7 +88,7 @@ const duckMove = setInterval(() => {
     // Check if the duck has reached its target Y coordinate
     if (duckTop <= randomYs[i]) {
       // Set a new random target Y coordinate
-      randomYs[i] = Math.floor(Math.random() * (550 - 0 + 1) + 150);
+      randomYs[i] = Math.floor(Math.random() * (550 - 0 + 300) + 150);
     }
 
     // Update the top and left coordinates of the duck
@@ -101,7 +102,6 @@ const duckMove = setInterval(() => {
     const distanceToTarget = randomYs[i] - duckTop;
 
     // Determine the speed of the descent based on the distance to the target
-    // const descentSpeed = distanceToTarget < 100 ? 1 : 2;
     const distanceToDrop = gameBoard.offsetHeight - duckTop - duckImg.offsetHeight;
     const descentSpeed = distanceToDrop < 100 ? 1 : 2;
 
@@ -140,11 +140,13 @@ gameBoard.addEventListener("click", (event) => {
 
 function duckKill(duckImg) {
   console.log("Good shot!");
-  // duckImg.src = `./img/duckkill.png`;
   duckImg.src = `./img/duckkill.png`;
 
   // Clear the duckMove interval to stop the duck from moving
-  clearInterval(duckMove);
+
+  //clearInterval must do this duck killed
+
+  // clearInterval(duckMove);
 
   setTimeout(() => {
     duckImg.src = `./img/duckDrop.png`;
@@ -156,7 +158,7 @@ function duckKill(duckImg) {
     const distanceToDrop = gameBoard.offsetHeight - duckTop - duckImg.offsetHeight;
 
     // Calculate the descent speed based on the distance to drop
-    const descentSpeed = distanceToDrop < 100 ? 1 : 2;
+    const descentSpeed = distanceToDrop < 100 ? 10 : 10;
 
     // Drop the duck smoothly
     const dropDuck = setInterval(() => {
@@ -164,24 +166,24 @@ function duckKill(duckImg) {
       const duckTop = duckImg.offsetTop;
 
       // Move the duck towards the bottom of the screen
-      duckImg.style.top = `${duckTop + descentSpeed}px`;
+      duckImg.style.top = `${duckTop + 10}px`;
 
       // Check if the duck has reached the bottom of the screen
       if (duckTop + duckImg.offsetHeight >= gameBoard.offsetHeight) {
         // Stop dropping the duck
-        clearInterval(dropDuck);
+        // clearInterval(dropDuck);
       }
-    }, 10);
+    }, 20);
   }, "300");
 }
 
 function startBoard() {
   return ` <div id="gameStartBoard">
-    <h1>Kill a lot of duck</h1>
-    <h2>"Retro gaming"</h2>
-        <h3><3</h3>
-      <a href="#" onclick="startGame()">Start game</a>
-    </div>
+  <h1>Kill a lot of duck</h1>
+  <h2>"Retro gaming"</h2>
+  <h3><3</h3>
+  <a href="#" onclick="startGame()">Start game</a>
+  </div>
   `;
 }
 
