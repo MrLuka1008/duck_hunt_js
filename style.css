@@ -74,4 +74,9 @@ body {
   position: absolute;
   width: 60px;
   height: 50px;
+}
+
+.bullet {
+  position: absolute;
+  width: 20px;
 }/*# sourceMappingURL=style.css.map */

@@ -2,15 +2,18 @@ const gameBoard = document.getElementById("root");
 const frontStage = document.createElement("div");
 
 let duckImgs = [];
+let bulletImgs = [];
 let randomYs = [];
 let movingRight = true;
 
 const lvlSystem = {
   lvlOne: {
     duckCount: 2,
+    bullet: 4,
   },
   lvlTwo: {
     duckCount: 3,
+    bullet: 5,
   },
 };
 
@@ -35,6 +38,19 @@ function startGame() {
   gameBoard.removeChild(gameBoard.children[0]);
 
   const duckCount = lvlSystem[currentLevel].duckCount;
+  const bulletCount = lvlSystem[currentLevel].bullet;
+
+  // console.log(bulletCount);
+
+  for (let i = 0; i < bulletCount; i++) {
+    let bulletImg = document.createElement("img");
+    bulletImg.src = "./img/bullet.png";
+    bulletImg.className = "bullet";
+    bulletImg.style.left = `${0 + i * 20}px`;
+    bulletImg.style.top = `10px`;
+    bulletImgs.push(bulletImg);
+    gameBoard.appendChild(bulletImg);
+  }
 
   for (let i = 0; i < duckCount; i++) {
     setTimeout(() => {
@@ -60,7 +76,7 @@ function startGame() {
   }
 }
 
-const duckMove = setInterval(() => {
+function duckMove() {
   // Get the current top and left coordinates of the duck
 
   for (let i = 0; i < duckImgs.length; i++) {
@@ -112,7 +128,9 @@ const duckMove = setInterval(() => {
       duckImg.style.top = `${duckTop - 2}px`;
     }
   }
-}, 20);
+}
+
+setInterval(duckMove, 20);
 
 gameBoard.addEventListener("click", (event) => {
   // Get the x and y coordinates of the mouse click
@@ -124,7 +142,6 @@ gameBoard.addEventListener("click", (event) => {
     const duckImg = duckImgs[i];
     const duckTop = duckImg.offsetTop;
     const duckLeft = duckImg.offsetLeft;
-
     if (
       mouseX >= duckLeft &&
       mouseX <= duckLeft + duckImg.offsetWidth &&
@@ -182,7 +199,7 @@ function startBoard() {
   <h1>Kill a lot of duck</h1>
   <h2>"Retro gaming"</h2>
   <h3><3</h3>
-  <a href="#" onclick="startGame()">Start game</a>
+  <a href="#" onclick="startGame()">Start game</a> 
   </div>
   `;
 }
