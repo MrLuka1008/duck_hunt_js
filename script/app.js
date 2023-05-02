@@ -1,10 +1,13 @@
 const gameBoard = document.getElementById("root");
 const frontStage = document.createElement("div");
+const bullets = document.createElement("div");
 
 let duckImgs = [];
 let bulletImgs = [];
 let randomYs = [];
 let movingRight = true;
+let count = 0;
+let gameStarted = false;
 
 const lvlSystem = {
   lvlOne: {
@@ -17,7 +20,7 @@ const lvlSystem = {
   },
 };
 
-let currentLevel = "lvlTwo";
+let currentLevel = "lvlOne";
 
 let duckObj = {
   img: `./img/greenDuck.png`,
@@ -35,21 +38,22 @@ function gameStart() {
 }
 
 function startGame() {
+  gameStarted = true;
   gameBoard.removeChild(gameBoard.children[0]);
 
   const duckCount = lvlSystem[currentLevel].duckCount;
   const bulletCount = lvlSystem[currentLevel].bullet;
 
-  // console.log(bulletCount);
-
   for (let i = 0; i < bulletCount; i++) {
     let bulletImg = document.createElement("img");
     bulletImg.src = "./img/bullet.png";
     bulletImg.className = "bullet";
+    bulletImg.id = `bullet${i}`;
     bulletImg.style.left = `${0 + i * 20}px`;
     bulletImg.style.top = `10px`;
     bulletImgs.push(bulletImg);
-    gameBoard.appendChild(bulletImg);
+    bullets.appendChild(bulletImg);
+    gameBoard.appendChild(bullets);
   }
 
   for (let i = 0; i < duckCount; i++) {
@@ -133,6 +137,9 @@ function duckMove() {
 setInterval(duckMove, 20);
 
 gameBoard.addEventListener("click", (event) => {
+  if (gameStarted) {
+    countShoot();
+  }
   // Get the x and y coordinates of the mouse click
   const mouseX = event.clientX - gameBoard.offsetLeft;
   const mouseY = event.clientY - gameBoard.offsetTop;
@@ -150,7 +157,6 @@ gameBoard.addEventListener("click", (event) => {
     ) {
       // The player has successfully shot the duck!
       duckKill(duckImg);
-      console.log("good");
     }
   }
 });
@@ -192,6 +198,15 @@ function duckKill(duckImg) {
       }
     }, 20);
   }, "300");
+}
+
+function countShoot() {
+  if (lvlSystem[currentLevel].bullet > 0) {
+    lvlSystem[currentLevel].bullet -= 1;
+    bullets.removeChild(bullets.lastChild);
+  } else {
+    alert("GameOver");
+  }
 }
 
 function startBoard() {
