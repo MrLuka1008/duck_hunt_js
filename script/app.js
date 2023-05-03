@@ -1,7 +1,9 @@
 const gameBoard = document.getElementById("root");
 const frontStage = document.createElement("div");
 const bullets = document.createElement("div");
+const aliveDuckCounts = document.createElement("div");
 
+let aliveDuckImgs = [];
 let duckImgs = [];
 let bulletImgs = [];
 let randomYs = [];
@@ -22,7 +24,6 @@ const lvlSystem = {
 };
 
 let newLvl = localStorage.getItem("currentLvl");
-// console.log(nowLvl);
 
 let currentLevel = newLvl;
 
@@ -60,6 +61,18 @@ function startGame() {
     bulletImgs.push(bulletImg);
     bullets.appendChild(bulletImg);
     gameBoard.appendChild(bullets);
+  }
+
+  for (let i = 0; i < duckCount; i++) {
+    let aliveDuckImg = document.createElement("img");
+    aliveDuckImg.src = "./img/aliveDuckCount.png";
+    aliveDuckImg.className = "aliveDuckCount";
+    aliveDuckImg.id = `aliveDuckCount${i}`;
+    aliveDuckImg.style.right = `${0 + i * 20}px`;
+    aliveDuckImg.style.top = `10px`;
+    aliveDuckImgs.push(aliveDuckImg);
+    aliveDuckCounts.appendChild(aliveDuckImg);
+    gameBoard.appendChild(aliveDuckImg);
   }
 
   for (let i = 0; i < duckCount; i++) {
@@ -177,12 +190,6 @@ function duckKill(duckImg, duckId) {
   console.log("Good shot!");
   duckImg.src = `./img/duckkill.png`;
 
-  // Clear the duckMove interval to stop the duck from moving
-
-  //clearInterval must do this duck killed
-
-  // clearInterval(duckMove);
-
   setTimeout(() => {
     duckImg.src = `./img/duckDrop.png`;
 
@@ -224,6 +231,8 @@ function countShoot() {
 const countDuck = () => {
   killedDuck += 1;
 
+  deadDuckCounter(killedDuck);
+
   if (killedDuck == lvlSystem[currentLevel].numbeOfDucks) {
     winCondition();
   }
@@ -240,6 +249,14 @@ function winCondition() {
 const loseCondition = () => {
   localStorage.setItem("currentLvl", "lvlOne");
   location.reload();
+};
+
+const deadDuckCounter = (killedDuck) => {
+  for (let i = 0; i < killedDuck; i++) {
+    aliveDuckImgs[i].src = `./img/deadDuckCount.png`;
+  }
+
+  console.log(aliveDuckImgs);
 };
 
 function startBoard() {

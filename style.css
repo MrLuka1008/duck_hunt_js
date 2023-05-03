@@ -79,4 +79,9 @@ body {
 .bullet {
   position: absolute;
   width: 20px;
+}
+
+.aliveDuckCount {
+  width: 20px;
+  position: absolute;
 }/*# sourceMappingURL=style.css.map */
