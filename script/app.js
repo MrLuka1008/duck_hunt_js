@@ -8,19 +8,25 @@ let randomYs = [];
 let movingRight = true;
 let count = 0;
 let gameStarted = false;
+let killedDuck = 0;
 
 const lvlSystem = {
   lvlOne: {
-    duckCount: 2,
+    numbeOfDucks: 2,
     bullet: 4,
   },
   lvlTwo: {
-    duckCount: 3,
+    numbeOfDucks: 3,
     bullet: 5,
   },
 };
 
-let currentLevel = "lvlOne";
+let newLvl = localStorage.getItem("currentLvl");
+// console.log(nowLvl);
+
+let currentLevel = newLvl;
+
+// localStorage.setItem("currentLvl", "lvlOne");
 
 let duckObj = {
   img: `./img/greenDuck.png`,
@@ -41,7 +47,7 @@ function startGame() {
   gameStarted = true;
   gameBoard.removeChild(gameBoard.children[0]);
 
-  const duckCount = lvlSystem[currentLevel].duckCount;
+  const duckCount = lvlSystem[currentLevel].numbeOfDucks;
   const bulletCount = lvlSystem[currentLevel].bullet;
 
   for (let i = 0; i < bulletCount; i++) {
@@ -155,13 +161,19 @@ gameBoard.addEventListener("click", (event) => {
       mouseY >= duckTop &&
       mouseY <= duckTop + duckImg.offsetHeight
     ) {
+      const duckId = duckImg.getAttribute("id");
+      console.log(duckId);
+      console.log(event.target);
       // The player has successfully shot the duck!
-      duckKill(duckImg);
+      duckKill(duckImg, duckId);
+      countDuck();
     }
   }
+
+  console.log(randomYs);
 });
 
-function duckKill(duckImg) {
+function duckKill(duckImg, duckId) {
   console.log("Good shot!");
   duckImg.src = `./img/duckkill.png`;
 
@@ -205,9 +217,30 @@ function countShoot() {
     lvlSystem[currentLevel].bullet -= 1;
     bullets.removeChild(bullets.lastChild);
   } else {
-    alert("GameOver");
+    loseCondition();
   }
 }
+
+const countDuck = () => {
+  killedDuck += 1;
+
+  if (killedDuck == lvlSystem[currentLevel].numbeOfDucks) {
+    winCondition();
+  }
+};
+
+function winCondition() {
+  // Remove all duck images from the game board
+  duckImgs.forEach((duckImg) => duckImg.remove());
+
+  localStorage.setItem("currentLvl", "lvlTwo");
+  location.reload();
+}
+
+const loseCondition = () => {
+  localStorage.setItem("currentLvl", "lvlOne");
+  location.reload();
+};
 
 function startBoard() {
   return ` <div id="gameStartBoard">
