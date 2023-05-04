@@ -16,16 +16,25 @@ const lvlSystem = {
   lvlOne: {
     numbeOfDucks: 2,
     bullet: 4,
+    speed: 20,
   },
   lvlTwo: {
     numbeOfDucks: 3,
     bullet: 5,
+    speed: 19,
+  },
+  lvlThree: {
+    numbeOfDucks: 5,
+    bullet: 7,
+    speed: 18,
   },
 };
 
 let newLvl = localStorage.getItem("currentLvl");
+let newSpeed = localStorage.getItem("currentSpeed");
 
 let currentLevel = newLvl;
+let currentSpeed = newSpeed;
 
 // localStorage.setItem("currentLvl", "lvlOne");
 
@@ -74,8 +83,9 @@ function startGame() {
     aliveDuckCounts.appendChild(aliveDuckImg);
     gameBoard.appendChild(aliveDuckImg);
   }
-
   for (let i = 0; i < duckCount; i++) {
+    const delay = Math.floor(Math.random() * 6000); // Generate a random delay between 0 and 4000 milliseconds
+
     setTimeout(() => {
       let duckImg = document.createElement("img");
       duckImg.src = duckObj.img;
@@ -94,8 +104,10 @@ function startGame() {
         movingRight = false;
       }
 
+      console.log(delay);
+
       gameBoard.appendChild(duckImg);
-    }, i * 4000); // Delay each duck by i * 2000 milliseconds
+    }, i * delay); // Delay each duck by a random amount of time
   }
 }
 
@@ -153,7 +165,7 @@ function duckMove() {
   }
 }
 
-setInterval(duckMove, 20);
+setInterval(duckMove, currentSpeed);
 
 gameBoard.addEventListener("click", (event) => {
   if (gameStarted) {
@@ -242,12 +254,21 @@ function winCondition() {
   // Remove all duck images from the game board
   duckImgs.forEach((duckImg) => duckImg.remove());
 
-  localStorage.setItem("currentLvl", "lvlTwo");
+  if (currentLevel == "lvlOne") {
+    localStorage.setItem("currentLvl", "lvlTwo");
+    localStorage.setItem("currentSpeed", "19");
+  } else if (currentLevel == "lvlTwo") {
+    localStorage.setItem("currentLvl", "lvlThree");
+    localStorage.setItem("currentSpeed", "14");
+  }
+
+  // localStorage.setItem("currentLvl", "lvlTwo");
   location.reload();
 }
 
 const loseCondition = () => {
   localStorage.setItem("currentLvl", "lvlOne");
+  localStorage.setItem("currentSpeed", "20");
   location.reload();
 };
 
