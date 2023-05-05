@@ -36,13 +36,13 @@ let newSpeed = localStorage.getItem("currentSpeed");
 let currentLevel = newLvl;
 let currentSpeed = newSpeed;
 
-// localStorage.setItem("currentLvl", "lvlOne");
+const duckCount = lvlSystem[currentLevel].numbeOfDucks;
+const bulletCount = lvlSystem[currentLevel].bullet;
 
 let duckObj = {
   img: `./img/greenDuck.png`,
   y: 350,
   x: 450,
-  isDuckDead: false,
 };
 
 function gameStart() {
@@ -57,9 +57,14 @@ function startGame() {
   gameStarted = true;
   gameBoard.removeChild(gameBoard.children[0]);
 
-  const duckCount = lvlSystem[currentLevel].numbeOfDucks;
-  const bulletCount = lvlSystem[currentLevel].bullet;
+  createBullets();
 
+  createDucksIcon();
+
+  createDucks();
+}
+
+const createBullets = () => {
   for (let i = 0; i < bulletCount; i++) {
     let bulletImg = document.createElement("img");
     bulletImg.src = "./img/bullet.png";
@@ -71,7 +76,9 @@ function startGame() {
     bullets.appendChild(bulletImg);
     gameBoard.appendChild(bullets);
   }
+};
 
+const createDucksIcon = () => {
   for (let i = 0; i < duckCount; i++) {
     let aliveDuckImg = document.createElement("img");
     aliveDuckImg.src = "./img/aliveDuckCount.png";
@@ -83,6 +90,9 @@ function startGame() {
     aliveDuckCounts.appendChild(aliveDuckImg);
     gameBoard.appendChild(aliveDuckImg);
   }
+};
+
+const createDucks = () => {
   for (let i = 0; i < duckCount; i++) {
     const delay = Math.floor(Math.random() * 6000); // Generate a random delay between 0 and 4000 milliseconds
 
@@ -109,7 +119,7 @@ function startGame() {
       gameBoard.appendChild(duckImg);
     }, i * delay); // Delay each duck by a random amount of time
   }
-}
+};
 
 function duckMove() {
   // Get the current top and left coordinates of the duck
@@ -245,7 +255,7 @@ const countDuck = () => {
 
   deadDuckCounter(killedDuck);
 
-  if (killedDuck == lvlSystem[currentLevel].numbeOfDucks) {
+  if (killedDuck == duckCount) {
     winCondition();
   }
 };
@@ -254,16 +264,27 @@ function winCondition() {
   // Remove all duck images from the game board
   duckImgs.forEach((duckImg) => duckImg.remove());
 
-  if (currentLevel == "lvlOne") {
-    localStorage.setItem("currentLvl", "lvlTwo");
-    localStorage.setItem("currentSpeed", "19");
-  } else if (currentLevel == "lvlTwo") {
-    localStorage.setItem("currentLvl", "lvlThree");
-    localStorage.setItem("currentSpeed", "14");
+  // Check if there's a higher level available
+  const nextLevel = getNextLevel(currentLevel);
+
+  if (nextLevel) {
+    // Update the level and speed in local storage
+    localStorage.setItem("currentLvl", nextLevel);
+    localStorage.setItem("currentSpeed", lvlSystem[nextLevel].speed.toString());
   }
 
-  // localStorage.setItem("currentLvl", "lvlTwo");
+  // Reload the page
   location.reload();
+}
+
+// Helper function to get the next level
+function getNextLevel(level) {
+  const levelKeys = Object.keys(lvlSystem);
+  const currentLevelIndex = levelKeys.indexOf(level);
+  if (currentLevelIndex < levelKeys.length - 1) {
+    return levelKeys[currentLevelIndex + 1];
+  }
+  return null;
 }
 
 const loseCondition = () => {
@@ -285,9 +306,12 @@ function startBoard() {
   <h1>Kill a lot of duck</h1>
   <h2>"Retro gaming"</h2>
   <h3><3</h3>
+  <h4>${newLvl}</h4>
   <a href="#" onclick="startGame()">Start game</a> 
   </div>
   `;
 }
+
+function nextToNext() {}
 
 gameStart();
