@@ -46,7 +46,11 @@ let duckObj = {
 };
 
 function gameStart() {
-  gameBoard.innerHTML = startBoard();
+  if (currentLevel == "lvlOne") {
+    gameBoard.innerHTML = startBoard();
+  } else {
+    gameBoard.innerHTML = nextToNext();
+  }
 
   frontStage.setAttribute("id", "frontStage");
 
@@ -291,6 +295,7 @@ const loseCondition = () => {
   localStorage.setItem("currentLvl", "lvlOne");
   localStorage.setItem("currentSpeed", "20");
   location.reload();
+  gameBoard.innerHTML = loseBoard();
 };
 
 const deadDuckCounter = (killedDuck) => {
@@ -312,6 +317,24 @@ function startBoard() {
   `;
 }
 
-function nextToNext() {}
+function nextToNext() {
+  return `
+  <div id="gameStartBoard">
+  <h2>You Win !!</h2>
+  <h2>Next</h2>
+  <h3>${newLvl}</h3>
+  <a href="#" onclick="startGame()">Start</a> 
+  </div> `;
+}
+
+function loseBoard() {
+  return `
+  <div id="gameStartBoard">
+  <h2>You Lose !!</h2>
+  <h2>Try Again</h2>
+  <h3>${newLvl}</h3>
+  <a href="#" onclick="startGame()">Start</a> 
+  </div> `;
+}
 
 gameStart();
