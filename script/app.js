@@ -24,14 +24,59 @@ const lvlSystem = {
     speed: 19,
   },
   lvlThree: {
+    numbeOfDucks: 4,
+    bullet: 6,
+    speed: 18,
+  },
+  lvlFour: {
     numbeOfDucks: 5,
     bullet: 7,
-    speed: 18,
+    speed: 17,
+  },
+  lvlFive: {
+    numbeOfDucks: 6,
+    bullet: 8,
+    speed: 16,
+  },
+  lvlSix: {
+    numbeOfDucks: 7,
+    bullet: 9,
+    speed: 15,
+  },
+  lvlSeven: {
+    numbeOfDucks: 8,
+    bullet: 10,
+    speed: 14,
+  },
+  lvlEight: {
+    numbeOfDucks: 9,
+    bullet: 11,
+    speed: 13,
+  },
+  lvlNine: {
+    numbeOfDucks: 10,
+    bullet: 12,
+    speed: 12,
+  },
+  lvlTen: {
+    numbeOfDucks: 11,
+    bullet: 13,
+    speed: 11,
   },
 };
 
 let newLvl = localStorage.getItem("currentLvl");
 let newSpeed = localStorage.getItem("currentSpeed");
+
+if (!newLvl) {
+  newLvl = "lvlOne";
+  localStorage.setItem("currentLvl", newLvl);
+}
+
+if (!newSpeed) {
+  newSpeed = "20";
+  localStorage.setItem("currentSpeed", newSpeed);
+}
 
 let currentLevel = newLvl;
 let currentSpeed = newSpeed;
@@ -47,8 +92,11 @@ let duckObj = {
 
 function gameStart() {
   if (currentLevel == "lvlOne") {
+    // check if the player lost the game and needs to restart from level one
     gameBoard.innerHTML = startBoard();
+    // loseCondition();
   } else {
+    // the player has progressed to the next level
     gameBoard.innerHTML = nextToNext();
   }
 
@@ -58,6 +106,7 @@ function gameStart() {
 }
 
 function startGame() {
+  // localStorage.setItem("currentLvl", "lessonLvl");
   gameStarted = true;
   gameBoard.removeChild(gameBoard.children[0]);
 
@@ -294,8 +343,10 @@ function getNextLevel(level) {
 const loseCondition = () => {
   localStorage.setItem("currentLvl", "lvlOne");
   localStorage.setItem("currentSpeed", "20");
-  location.reload();
   gameBoard.innerHTML = loseBoard();
+  setTimeout(() => {
+    location.reload();
+  }, 2000);
 };
 
 const deadDuckCounter = (killedDuck) => {
@@ -327,13 +378,14 @@ function nextToNext() {
   </div> `;
 }
 
+{
+  /* <a href="#" onclick="location.reload()">Start</a> */
+}
 function loseBoard() {
   return `
   <div id="gameStartBoard">
   <h2>You Lose !!</h2>
   <h2>Try Again</h2>
-  <h3>${newLvl}</h3>
-  <a href="#" onclick="startGame()">Start</a> 
   </div> `;
 }
 
