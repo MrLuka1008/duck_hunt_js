@@ -5,6 +5,11 @@ const aliveDuckCounts = document.createElement("div");
 
 const gunShootSound = new Audio("../sound/gunShootSound.mp3");
 const duckFlySound = new Audio("../sound/duckFlySound.mp3");
+const fallSound = new Audio("../sound/fallSound.mp3");
+const loseSound = new Audio("../sound/loseSound.mp3");
+const winSound = new Audio("../sound/winSound.mp3");
+const introSound = new Audio("../sound/introSound.mp3");
+duckFlySound.volume = 0.1;
 
 let aliveDuckImgs = [];
 let duckImgs = [];
@@ -113,6 +118,7 @@ function gameStart() {
 function startGame() {
   // localStorage.setItem("currentLvl", "lessonLvl");
   gameStarted = true;
+
   gameBoard.removeChild(gameBoard.children[0]);
 
   createBullets();
@@ -265,6 +271,7 @@ gameBoard.addEventListener("click", (event) => {
 
 function duckKill(duckImg, duckId) {
   duckImg.src = `./img/duckkill.png`;
+  fallSound.play();
 
   setTimeout(() => {
     duckImg.src = `./img/duckDrop.png`;
@@ -351,6 +358,9 @@ function getNextLevel(level) {
 const loseCondition = () => {
   localStorage.setItem("currentLvl", "lvlOne");
   localStorage.setItem("currentSpeed", "20");
+  fallSound.pause();
+  duckFlySound.pause();
+  loseSound.play();
   gameBoard.innerHTML = loseBoard();
   setTimeout(() => {
     location.reload();
@@ -364,6 +374,7 @@ const deadDuckCounter = (killedDuck) => {
 };
 
 function startBoard() {
+  introSound.play();
   return ` <div id="gameStartBoard">
   <h1>Kill a lot of duck</h1>
   <h2>"Retro gaming"</h2>
@@ -375,6 +386,7 @@ function startBoard() {
 }
 
 function nextToNext() {
+  winSound.play();
   return `
   <div id="gameStartBoard">
   <h2>You Win !!</h2>
