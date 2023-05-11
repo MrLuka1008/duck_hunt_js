@@ -3,6 +3,9 @@ const frontStage = document.createElement("div");
 const bullets = document.createElement("div");
 const aliveDuckCounts = document.createElement("div");
 
+const gunShootSound = new Audio("../sound/gunShootSound.mp3");
+const duckFlySound = new Audio("../sound/duckFlySound.mp3");
+
 let aliveDuckImgs = [];
 let duckImgs = [];
 let bulletImgs = [];
@@ -11,6 +14,8 @@ let movingRight = true;
 let count = 0;
 let gameStarted = false;
 let killedDuck = 0;
+
+let isShotFired = false;
 
 const lvlSystem = {
   lvlOne: {
@@ -167,7 +172,7 @@ const createDucks = () => {
         movingRight = false;
       }
 
-      console.log(delay);
+      duckFlySound.play();
 
       gameBoard.appendChild(duckImg);
     }, i * delay); // Delay each duck by a random amount of time
@@ -250,19 +255,15 @@ gameBoard.addEventListener("click", (event) => {
       mouseY <= duckTop + duckImg.offsetHeight
     ) {
       const duckId = duckImg.getAttribute("id");
-      console.log(duckId);
-      console.log(event.target);
+
       // The player has successfully shot the duck!
       duckKill(duckImg, duckId);
       countDuck();
     }
   }
-
-  console.log(randomYs);
 });
 
 function duckKill(duckImg, duckId) {
-  console.log("Good shot!");
   duckImg.src = `./img/duckkill.png`;
 
   setTimeout(() => {
@@ -295,6 +296,12 @@ function duckKill(duckImg, duckId) {
 }
 
 function countShoot() {
+  if (isShotFired) {
+    gunShootSound.play();
+  } else {
+    isShotFired = true;
+  }
+
   if (lvlSystem[currentLevel].bullet > 0) {
     lvlSystem[currentLevel].bullet -= 1;
     bullets.removeChild(bullets.lastChild);
@@ -314,20 +321,21 @@ const countDuck = () => {
 };
 
 function winCondition() {
-  // Remove all duck images from the game board
-  duckImgs.forEach((duckImg) => duckImg.remove());
+  setTimeout(() => {
+    // Remove all duck images from the game board
+    duckImgs.forEach((duckImg) => duckImg.remove());
 
-  // Check if there's a higher level available
-  const nextLevel = getNextLevel(currentLevel);
+    // Check if there's a higher level available
+    const nextLevel = getNextLevel(currentLevel);
 
-  if (nextLevel) {
-    // Update the level and speed in local storage
-    localStorage.setItem("currentLvl", nextLevel);
-    localStorage.setItem("currentSpeed", lvlSystem[nextLevel].speed.toString());
-  }
-
-  // Reload the page
-  location.reload();
+    if (nextLevel) {
+      // Update the level and speed in local storage
+      localStorage.setItem("currentLvl", nextLevel);
+      localStorage.setItem("currentSpeed", lvlSystem[nextLevel].speed.toString());
+    }
+    // Reload the page
+    location.reload();
+  }, 1500);
 }
 
 // Helper function to get the next level
@@ -353,8 +361,6 @@ const deadDuckCounter = (killedDuck) => {
   for (let i = 0; i < killedDuck; i++) {
     aliveDuckImgs[i].src = `./img/deadDuckCount.png`;
   }
-
-  console.log(aliveDuckImgs);
 };
 
 function startBoard() {
@@ -378,9 +384,6 @@ function nextToNext() {
   </div> `;
 }
 
-{
-  /* <a href="#" onclick="location.reload()">Start</a> */
-}
 function loseBoard() {
   return `
   <div id="gameStartBoard">
