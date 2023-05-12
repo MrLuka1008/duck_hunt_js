@@ -280,8 +280,13 @@ gameBoard.addEventListener("click", (event) => {
 });
 
 function duckKill(duckImg, duckId) {
-  duckImg.src = `./img/duckkill.png`;
   fallSound.play();
+
+  // duckImg.src = `./img/duckKill.png`;
+
+  setTimeout(() => {
+    duckImg.src = `./img/duckKill.png`;
+  }, 2);
 
   setTimeout(() => {
     duckImg.src = `./img/duckDrop.png`;
