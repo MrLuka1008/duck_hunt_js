@@ -16,7 +16,6 @@ let duckImgs = [];
 let bulletImgs = [];
 let randomYs = [];
 let movingRight = true;
-let count = 0;
 let gameStarted = false;
 let killedDuck = 0;
 
@@ -95,7 +94,7 @@ const duckCount = lvlSystem[currentLevel].numbeOfDucks;
 const bulletCount = lvlSystem[currentLevel].bullet;
 
 let duckObj = {
-  img: `./img/greenDuck.png`,
+  img: `./img/greenDuck.gif`,
   y: 350,
   x: 450,
 };
@@ -328,6 +327,8 @@ const countDuck = () => {
 };
 
 function winCondition() {
+  winDog();
+
   setTimeout(() => {
     // Remove all duck images from the game board
     duckImgs.forEach((duckImg) => duckImg.remove());
@@ -372,6 +373,16 @@ const deadDuckCounter = (killedDuck) => {
     aliveDuckImgs[i].src = `./img/deadDuckCount.png`;
   }
 };
+
+function winDog() {
+  let dogImg = document.createElement("img");
+  dogImg.src = "./img/winDog.png";
+  dogImg.id = "winDogs";
+  dogImg.className = "winDogs";
+  dogImg.style.top = "290px";
+
+  gameBoard.appendChild(dogImg);
+}
 
 function startBoard() {
   introSound.play();
