@@ -334,6 +334,11 @@ const countDuck = () => {
 
 function startTimer() {
   let timerIcon = document.createElement("h5");
+  let lvlIcon = document.createElement("h5");
+  lvlIcon.style.left = `54%`;
+  lvlIcon.style.color = `red`;
+  lvlIcon.textContent = newLvl;
+  gameBoard.appendChild(lvlIcon);
 
   setInterval(() => {
     timeLeft--;
