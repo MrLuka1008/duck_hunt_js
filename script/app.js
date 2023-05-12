@@ -3,7 +3,9 @@ const frontStage = document.createElement("div");
 const bullets = document.createElement("div");
 const aliveDuckCounts = document.createElement("div");
 
-const gunShootSound = new Audio("https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/sound/gunShootSound.mp3");
+const gunShootSound = new Audio(
+  "https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/gunShootSound.mp3"
+);
 const duckFlySound = new Audio("../sound/duckFlySound.mp3");
 const fallSound = new Audio("../sound/fallSound.mp3");
 const loseSound = new Audio("../sound/loseSound.mp3");
