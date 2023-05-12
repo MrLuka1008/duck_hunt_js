@@ -95,6 +95,29 @@ body {
   position: absolute;
 }
 
+.searchDogImg {
+  position: absolute;
+  z-index: 2;
+  top: 350px;
+  animation: move 8s ease-out forwards;
+}
+
+@keyframes move {
+  0% {
+    left: 10%;
+    top: 350px;
+  }
+  50% {
+    left: 40%;
+    top: 340px;
+    z-index: 1;
+  }
+  100% {
+    left: 50%;
+    top: 400px;
+    z-index: 1;
+  }
+}
 @keyframes rise-up {
   from {
     transform: translateY(100%);

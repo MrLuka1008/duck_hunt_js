@@ -119,6 +119,7 @@ function startGame() {
   gameStarted = true;
 
   gameBoard.removeChild(gameBoard.children[0]);
+  searchDuck();
 
   createBullets();
 
@@ -362,10 +363,15 @@ const loseCondition = () => {
   fallSound.pause();
   duckFlySound.pause();
   loseSound.play();
-  gameBoard.innerHTML = loseBoard();
+  loseDog();
+
+  setTimeout(() => {
+    gameBoard.innerHTML = loseBoard();
+  }, 800);
+
   setTimeout(() => {
     location.reload();
-  }, 2000);
+  }, 3000);
 };
 
 const deadDuckCounter = (killedDuck) => {
@@ -374,14 +380,31 @@ const deadDuckCounter = (killedDuck) => {
   }
 };
 
-function winDog() {
+function createDog(src, id, className, topPosition) {
   let dogImg = document.createElement("img");
-  dogImg.src = "./img/winDog.png";
-  dogImg.id = "winDogs";
-  dogImg.className = "winDogs";
-  dogImg.style.top = "290px";
+  dogImg.src = src;
+  dogImg.id = id;
+  dogImg.className = className;
+  dogImg.style.top = topPosition;
 
   gameBoard.appendChild(dogImg);
+}
+
+function winDog() {
+  createDog("./img/winDog.png", "winDogs", "winDogs", "290px");
+}
+
+function loseDog() {
+  createDog("./img/loseDog.png", "winDogs", "winDogs", "300px");
+}
+
+function searchDuck() {
+  let searchDogImg = document.createElement("img");
+  searchDogImg.src = `./img/searchDuck.gif`;
+  searchDogImg.id = `searchDogImg`;
+  searchDogImg.className = `searchDogImg`;
+
+  gameBoard.appendChild(searchDogImg);
 }
 
 function startBoard() {
