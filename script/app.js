@@ -11,14 +11,18 @@ const winSound = new Audio("../sound/winSound.mp3");
 const introSound = new Audio("../sound/introSound.mp3");
 duckFlySound.volume = 0.1;
 
+// Initialize empty arrays to hold image file paths and random Y-coordinates for the ducks
 let aliveDuckImgs = [];
 let duckImgs = [];
 let bulletImgs = [];
 let randomYs = [];
+
+// Initialize variables to keep track of duck movement direction, game status, and number of killed ducks
 let movingRight = true;
 let gameStarted = false;
 let killedDuck = 0;
 
+// Initialize variable to keep track of whether or not the player has fired a shot
 let isShotFired = false;
 
 const lvlSystem = {
@@ -77,6 +81,8 @@ const lvlSystem = {
 let newLvl = localStorage.getItem("currentLvl");
 let newSpeed = localStorage.getItem("currentSpeed");
 
+// If there is no value assigned to "newLvl" variable, set it to "lvlOne" string and save it in localStorage
+
 if (!newLvl) {
   newLvl = "lvlOne";
   localStorage.setItem("currentLvl", newLvl);
@@ -122,16 +128,13 @@ function startGame() {
   gameBoard.removeChild(gameBoard.children[0]);
 
   startTimer();
-  // createScoreBoard();
-
   searchDuck();
-
   createBullets();
-
   createDucksIcon();
-
   createDucks();
 }
+
+// This function creates the bullets for the game.
 
 const createBullets = () => {
   for (let i = 0; i < bulletCount; i++) {
@@ -146,7 +149,7 @@ const createBullets = () => {
     gameBoard.appendChild(bullets);
   }
 };
-
+// This function creates the DucksIcon for the game.
 const createDucksIcon = () => {
   for (let i = 0; i < duckCount; i++) {
     let aliveDuckImg = document.createElement("img");
@@ -160,6 +163,8 @@ const createDucksIcon = () => {
     gameBoard.appendChild(aliveDuckImg);
   }
 };
+
+// This function creates the Ducks for the game.
 
 const createDucks = () => {
   for (let i = 0; i < duckCount; i++) {
