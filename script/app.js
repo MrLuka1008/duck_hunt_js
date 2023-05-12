@@ -93,6 +93,8 @@ let currentSpeed = newSpeed;
 const duckCount = lvlSystem[currentLevel].numbeOfDucks;
 const bulletCount = lvlSystem[currentLevel].bullet;
 
+let timeLeft = duckCount * 5;
+
 let duckObj = {
   img: `./img/greenDuck.gif`,
   y: 350,
@@ -115,10 +117,13 @@ function gameStart() {
 }
 
 function startGame() {
-  // localStorage.setItem("currentLvl", "lessonLvl");
   gameStarted = true;
 
   gameBoard.removeChild(gameBoard.children[0]);
+
+  startTimer();
+  // createScoreBoard();
+
   searchDuck();
 
   createBullets();
@@ -326,6 +331,20 @@ const countDuck = () => {
     winCondition();
   }
 };
+
+function startTimer() {
+  let timerIcon = document.createElement("h5");
+
+  setInterval(() => {
+    timeLeft--;
+    if (timeLeft == 0) {
+      loseCondition();
+    } else {
+      timerIcon.textContent = timeLeft;
+      gameBoard.appendChild(timerIcon);
+    }
+  }, 1000);
+}
 
 function winCondition() {
   winDog();
