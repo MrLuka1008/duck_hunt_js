@@ -6,11 +6,13 @@ const aliveDuckCounts = document.createElement("div");
 const gunShootSound = new Audio(
   "https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/gunShootSound.mp3"
 );
-const duckFlySound = new Audio("../sound/duckFlySound.mp3");
-const fallSound = new Audio("../sound/fallSound.mp3");
-const loseSound = new Audio("../sound/loseSound.mp3");
-const winSound = new Audio("../sound/winSound.mp3");
-const introSound = new Audio("../sound/introSound.mp3");
+const duckFlySound = new Audio(
+  "https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/duckFlySound.mp3"
+);
+const fallSound = new Audio("https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/fallSound.mp3");
+const loseSound = new Audio("https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/loseSound.mp3");
+const winSound = new Audio("https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/winSound.mp3");
+const introSound = new Audio("https://raw.githubusercontent.com/MrLuka1008/duck_hunt_js/master/sound/introSound.mp3");
 duckFlySound.volume = 0.1;
 
 // Initialize empty arrays to hold image file paths and random Y-coordinates for the ducks
