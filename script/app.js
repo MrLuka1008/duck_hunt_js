@@ -172,7 +172,7 @@ const createDucksIcon = () => {
 
 const createDucks = () => {
   for (let i = 0; i < duckCount; i++) {
-    const delay = Math.floor(Math.random() * 6000); // Generate a random delay between 0 and 4000 milliseconds
+    const delay = Math.floor(Math.random() * 4000); // Generate a random delay between 0 and 4000 milliseconds
 
     setTimeout(() => {
       let duckImg = document.createElement("img");
